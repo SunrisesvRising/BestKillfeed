@@ -1,0 +1,9 @@
+{
+    "name": "BestKillfeed",
+    "version_number": "1.0.1",
+    "website_url": "",
+    "description": "BestKillfeed is an advanced killfeed mod for V Rising, designed to enhance kill tracking, manage player levels, and introduce community features like leaderboards and detailed player info commands.",
+    "dependencies": [
+        "deca-VampireCommandFramework-0.10.3"
+    ]
+}
