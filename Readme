@@ -1,0 +1,66 @@
+﻿🩸 BestKillfeed
+BestKillfeed is an advanced killfeed mod for V Rising, designed to enhance kill tracking, manage player levels, and introduce community features like leaderboards and detailed player info commands.
+
+🔧 Main Features
+✅ Enhanced Killfeed in Chat
+Displays clan, player name, and max level for each kill.
+
+Automatically detects player max levels on login, kill, or when executing .lb or .pi commands.
+
+🛡️ Kill-Steal Protection
+If Player A downs Player B, but Player C finishes them, the kill is credited to Player A.
+
+🚫 Anti-Grief Level Difference System
+Configurable level-difference protection:
+
+For level 91: max difference = 10 levels
+
+For levels below 91: max difference = 15 levels
+
+Player levels are shown in red if they exceed the allowed difference.
+
+📊 Custom Commands
+.lb → Displays an aesthetic leaderboard with:
+
+Kills, deaths, max killstreaks
+
+Pagination and ranking system
+
+.pi → Displays detailed player info:
+
+Name, clan, level, clan members, and connection status
+
+Name in green = connected
+
+Name in red = offline
+
+🎯 Bounty System (IN DEVELOPMENT)
+Players with a killstreak over 5 are marked with a bounty icon on the map.
+
+This system is still experimental.
+
+⚙️ Easy Configuration
+Killfeed.cfg file allows customization of:
+
+Text colors
+
+Level difference thresholds
+
+Bounty system toggles
+
+Other mod mechanics
+
+💾 Persistent Data Storage
+MaxLevels.json – Stores maximum detected levels per player.
+
+PlayerStats.json – Tracks kills, deaths, and streaks.
+
+🚧 In Development
+🧪 Improving bounty system stability
+
+🩸 Adding vBlood Boss kill tracking
+
+🔄 Additional integration with other mods (planned)
+
+📝 License
+This mod is distributed under the MIT License. You are free to modify and redistribute it, as long as proper credit is given to the original author.

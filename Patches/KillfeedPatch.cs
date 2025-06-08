@@ -15,6 +15,7 @@ namespace BestKillfeed.Patches
     {
             public static void Postfix(DeathEventListenerSystem __instance)
         {
+            var _ = BountyService.Instance;
             var entityManager = Core.Server.EntityManager;
             var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<DeathEvent>());
             var entities = query.ToEntityArray(Allocator.Temp);

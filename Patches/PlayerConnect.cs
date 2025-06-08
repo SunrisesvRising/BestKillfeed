@@ -34,8 +34,16 @@ namespace BestKillfeed.Patches
                 var characterName = user.CharacterName.ToString();
                 if (string.IsNullOrWhiteSpace(characterName)) return;
 
+                // Update player level
                 LevelService.Instance.UpdatePlayerLevel(userEntity);
                 Debug.Log($"[BestKillfeed] Player {characterName} connected. Level updated.");
+
+                //// ** Ajout bounty icon **
+                //if (BountyService.Instance.HasBounty(characterName))
+                //{
+                //    BountyService.AddIcon(userEntity);
+                //    Debug.Log($"[BestKillfeed] Bounty icon added for {characterName} on connect.");
+                //}
             }
             catch (Exception ex)
             {
@@ -43,4 +51,5 @@ namespace BestKillfeed.Patches
             }
         }
     }
+
 }

@@ -13,6 +13,8 @@ namespace BestKillfeed.Services
         private static readonly string ConfigPath = Path.Combine(BepInEx.Paths.ConfigPath, "Bestkillfeed");
         private static readonly string PlayerStatsPath = Path.Combine(ConfigPath, "PlayerStats.json");
 
+        public delegate void KillStreakChangedHandler(string playerName, Entity playerEntity, int currentStreak);
+        public event KillStreakChangedHandler OnKillStreakChanged;
         private Dictionary<string, PlayerStats> playerStats = new();
 
         private static StatsService _instance;
@@ -36,15 +38,7 @@ namespace BestKillfeed.Services
 
             if (stats.CurrentStreak > stats.MaxStreak)
                 stats.MaxStreak = stats.CurrentStreak;
-
-            if (KillfeedSettings.EnableBountySystem.Value &&
-                stats.CurrentStreak == KillfeedSettings.BountyStreakThreshold.Value &&
-                !BountyService.Instance.HasBounty(playerName))
-            {
-                BountyService.Instance.PlaceBounty(playerName);
-                BountyService.AddIcon(playerEntity);
-            }
-
+            OnKillStreakChanged?.Invoke(playerName, playerEntity, stats.CurrentStreak);
             Save();
         }
 
@@ -58,16 +52,9 @@ namespace BestKillfeed.Services
             var stats = playerStats[playerName];
             stats.Deaths++;
             stats.CurrentStreak = 0;
-
-            if (BountyService.Instance.HasBounty(playerName))
-            {
-                BountyService.Instance.RemoveBounty(playerName);
-                BountyService.RemoveIcon(playerEntity);
-            }
-
+            OnKillStreakChanged?.Invoke(playerName, playerEntity, 0);
             Save();
         }
-
 
         public PlayerStats GetStats(string playerName)
         {

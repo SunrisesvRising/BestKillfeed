@@ -13,6 +13,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="CharacterCreateSystem.cs" />
+	  <Compile Remove="Commands\Bounties.cs" />
 	</ItemGroup>
 	<ItemGroup>
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
