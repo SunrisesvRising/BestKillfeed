@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "oy9qDzy/2DR7tfJsUU6UtWLUj7dNm0di5Vx8Z1X/M36uaZ6JLLk841tdrU/bliTsUj5ecU4sdyrUhOUKYKFDGA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\BestKillfeed.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\natha\\.nuget\\packages\\bepinex.plugininfoprops\\2.1.0\\bepinex.plugininfoprops.2.1.0.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\litedb\\5.0.21\\litedb.5.0.21.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\system.text.json\\6.0.11\\system.text.json.6.0.11.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\vrising.vampirecommandframework\\0.9.0\\vrising.vampirecommandframework.0.9.0.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.30\\microsoft.windowsdesktop.app.ref.6.0.30.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.30\\microsoft.netcore.app.ref.6.0.30.nupkg.sha512",
+    "C:\\Users\\natha\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.30\\microsoft.aspnetcore.app.ref.6.0.30.nupkg.sha512"
+  ],
+  "logs": []
+}
