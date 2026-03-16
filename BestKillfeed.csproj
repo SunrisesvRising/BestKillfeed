@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<AssemblyName>BestKillfeed</AssemblyName>
+		<AssemblyName>BestKillFeed</AssemblyName>
 		<Description>Only the best of the best</Description>
 		<Version>1.0.0</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>BestKillfeed</RootNamespace>
 		<Authors>Irozer</Authors>
-		<BepInExPluginGuid>aa.BestKillfeed</BepInExPluginGuid>
+		<BepInExPluginGuid>aa.BestKillFeed</BepInExPluginGuid>
 		<BaseOutputPath></BaseOutputPath>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\BestKillfeed.csproj": {}
+    "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj": {}
   },
   "projects": {
-    "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\BestKillfeed.csproj": {
+    "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\BestKillfeed.csproj",
+        "projectUniqueName": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj",
         "projectName": "BestKillfeed",
-        "projectPath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\BestKillfeed.csproj",
+        "projectPath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj",
         "packagesPath": "C:\\Users\\natha\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\NuGet.Config",
+          "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\NuGet.Config",
           "C:\\Users\\natha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

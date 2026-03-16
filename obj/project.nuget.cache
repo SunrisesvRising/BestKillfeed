@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oy9qDzy/2DR7tfJsUU6UtWLUj7dNm0di5Vx8Z1X/M36uaZ6JLLk841tdrU/bliTsUj5ecU4sdyrUhOUKYKFDGA==",
+  "dgSpecHash": "jjk/hE1wGSrdjkmU1KyELc/3RlmlPcTgU4vm+7AlAw2u9TV6cUMCOGWf8OLLAzRjQjs8MH7ZPInvLcKlZuzRfA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\BestKillfeed.csproj",
+  "projectFilePath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\natha\\.nuget\\packages\\bepinex.plugininfoprops\\2.1.0\\bepinex.plugininfoprops.2.1.0.nupkg.sha512",
     "C:\\Users\\natha\\.nuget\\packages\\litedb\\5.0.21\\litedb.5.0.21.nupkg.sha512",
