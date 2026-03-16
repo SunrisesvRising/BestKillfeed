@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "BestKillfeed/1.0.0": {
+      "BestKillFeed/1.0.0": {
         "dependencies": {
           "BepInEx.PluginInfoProps": "2.1.0",
           "LiteDB": "5.0.21",
@@ -214,7 +214,7 @@
           "__Generated": "0.0.0.0"
         },
         "runtime": {
-          "BestKillfeed.dll": {}
+          "BestKillFeed.dll": {}
         }
       },
       "BepInEx.PluginInfoProps/2.1.0": {},
@@ -1849,7 +1849,7 @@
     }
   },
   "libraries": {
-    "BestKillfeed/1.0.0": {
+    "BestKillFeed/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

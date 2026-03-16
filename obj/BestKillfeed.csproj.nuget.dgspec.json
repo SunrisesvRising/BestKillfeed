@@ -8,10 +8,10 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj",
-        "projectName": "BestKillfeed",
+        "projectName": "BestKillFeed",
         "projectPath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\BestKillfeed.csproj",
         "packagesPath": "C:\\Users\\natha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillfeed\\obj\\",
+        "outputPath": "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\natha\\Desktop\\Sunrises DUO\\BestKillFeed\\NuGet.Config",

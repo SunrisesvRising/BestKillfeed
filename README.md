@@ -27,7 +27,7 @@
 
 1. Install **BepInEx** on your V Rising server.
 2. Install **VampireCommandFramework**.
-3. Drop `BestKillfeed.dll` into `BepInEx/plugins/`.
+3. Drop `BestKillfeed.dll` and `LiteDB.dll` into `BepInEx/plugins/`.
 4. Start the server. The config file `killfeed.cfg` and the database will be created automatically under `BepInEx/config/BestKillfeed/`.
 
 ---
