@@ -34,8 +34,6 @@ namespace BestKillfeed.Commands
             new float2(-1573.5f, -929.1f),
         };
 
-        private const int ChannelDurationSeconds = 30;
-        private const int GracePeriodSeconds = 5;
         private static readonly int[] TickAnnounceAt = { 30, 20, 10, 5, 3, 2, 1 };
         private static readonly System.Collections.Generic.Dictionary<string, int> _graceTicks = new();
 
@@ -160,7 +158,7 @@ namespace BestKillfeed.Commands
             ctx.Reply($"<color=#ffaa00>Total targets: {activeBounties.Count}</color>");
         }
 
-        [Command("bounty-claim", "bc", description: "Claim your bounty — stay 30s at the Sacrificial Site", adminOnly: false)]
+        [Command("bounty-claim", "bc", description: "Claim your bounty — stay at the Sacrificial Site", adminOnly: false)]
         public static void ClaimSelfBounty(ChatCommandContext ctx)
         {
             if (!KillfeedSettings.EnableBounty.Value)
@@ -168,11 +166,15 @@ namespace BestKillfeed.Commands
                 ctx.Reply("<color=#ff0000>The bounty system is currently disabled.</color>");
                 return;
             }
+
             var entityManager = VWorld.ServerEntityManager;
             var user = ctx.Event.User;
             var characterEntity = ctx.Event.SenderCharacterEntity;
             var playerName = user.CharacterName.ToString();
             var playerKey = playerName.ToLower();
+
+            int channelDuration = KillfeedSettings.BountyClaimDuration.Value;
+            int gracePeriod = KillfeedSettings.BountyClaimGracePeriod.Value;
 
             if (ChannelManager.HasActiveChannel(playerKey))
             {
@@ -193,13 +195,13 @@ namespace BestKillfeed.Commands
                 return;
             }
 
-            var startAnnounce = $"<color=#ffaa00>[ BOUNTY ] {playerName} is attempting to claim their bounty at the Sacrificial Site! They must hold for <color=#ffffff>{ChannelDurationSeconds}s</color><color=#ffaa00>!</color>";
+            var startAnnounce = $"<color=#ffaa00>[ BOUNTY ] {playerName} is attempting to claim their bounty at the Sacrificial Site! They must hold for <color=#ffffff>{channelDuration}s</color><color=#ffaa00>!</color>";
             Unity.Collections.FixedString512Bytes fStartAnnounce = startAnnounce;
             ServerChatUtils.SendSystemMessageToAllClients(entityManager, ref fStartAnnounce);
 
             ChannelManager.StartChannel(
                 playerKey,
-                durationSeconds: ChannelDurationSeconds,
+                durationSeconds: channelDuration,
 
                 onTick: (remaining) =>
                 {
@@ -222,7 +224,7 @@ namespace BestKillfeed.Commands
                     if (!IsPlayerInZone(entityManager, characterEntity))
                     {
                         if (!_graceTicks.ContainsKey(playerKey))
-                            _graceTicks[playerKey] = GracePeriodSeconds;
+                            _graceTicks[playerKey] = gracePeriod;
 
                         int graceLeft = _graceTicks[playerKey];
 
@@ -278,13 +280,17 @@ namespace BestKillfeed.Commands
                         return;
                     }
 
+                    // Sauvegarde le streak avant reset pour le scaling du reward
+                    int streakBeforeReset = latestData.CurrentStreak;
+
                     latestData.HasBounty = false;
+                    latestData.CurrentStreak = 0;
                     PlayerService.Instance.SavePlayerData(latestData);
                     BountyService.Instance.RemoveBountyIcon(characterEntity);
-                    RewardService.Instance.GiveBountyReward(characterEntity, "", isSelfClaim: true);
+                    RewardService.Instance.GiveBountyReward(characterEntity, "", streakBeforeReset, isSelfClaim: true);
 
                     SendMessageToPlayer(entityManager, user,
-                        "<color=#00ff00>[ BOUNTY ] Congratulations! You held for 30 seconds and claimed your bounty!</color>");
+                        $"<color=#00ff00>[ BOUNTY ] Congratulations! You held for {channelDuration}s and claimed your bounty!</color>");
 
                     var announce = $"<color=#ffff00>[ BOUNTY ] {playerName} survived their bounty and claimed the reward at the Sacrificial Site!</color>";
                     Unity.Collections.FixedString512Bytes fAnnounce = announce;

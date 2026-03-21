@@ -41,11 +41,18 @@ namespace BestKillfeed.Patches
 
                 if (string.IsNullOrWhiteSpace(victimName) || string.IsNullOrWhiteSpace(killerName) || victimName == killerName) continue;
 
+                // --- Détection FFA (soft-dependency BestFFAZones) ---
+                bool isFfaKill = FfaBridge.IsFfaKill(killerUserData.PlatformId, victimUserData.PlatformId);
+
                 PlayerService.Instance.OnPlayerKill(killerName);
                 var killerData = PlayerService.Instance.GetPlayerData(killerName);
 
                 bool announcedBounty = false;
                 bool victimHadBounty = false;
+
+                // Sauvegarde le streak de la victime AVANT le reset (pour le scaling du bounty reward)
+                var victimDataBeforeDeath = PlayerService.Instance.GetPlayerData(victimName);
+                int victimStreakBeforeDeath = victimDataBeforeDeath.CurrentStreak;
 
                 if (KillfeedSettings.EnableBounty.Value)
                 {
@@ -56,7 +63,9 @@ namespace BestKillfeed.Patches
                 PlayerService.Instance.OnPlayerDeath(victimName);
                 var victimData = PlayerService.Instance.GetPlayerData(victimName);
 
-                bool killAllowed = IsKillAllowed(killerData.MaxLevel, victimData.MaxLevel);
+                // En zone FFA, le gap de niveau est toujours ignoré
+                bool killAllowed = isFfaKill || IsKillAllowed(killerData.MaxLevel, victimData.MaxLevel);
+
                 string levelColor = killAllowed ? KillfeedSettings.AllowedLevelColor.Value : KillfeedSettings.ForbiddenLevelColor.Value;
                 string warningIndicator = killAllowed ? "" : $"<color={KillfeedSettings.ForbiddenLevelColor.Value}>[!] </color>";
 
@@ -76,7 +85,13 @@ namespace BestKillfeed.Patches
                 var killerClan = TruncateClan(GetClanName(entityManager, killerUserData));
                 var victimClan = TruncateClan(GetClanName(entityManager, victimUserData));
 
+                // Tag FFA affiché uniquement si les deux joueurs sont en zone FFA
+                string ffaTag = isFfaKill
+                    ? $"<color={KillfeedSettings.FfaTagColor.Value}>[FFA]</color> "
+                    : "";
+
                 var msgString = KillfeedSettings.KillMessageFormat.Value
+                    .Replace("{FfaTag}", ffaTag)
                     .Replace("{Warning}", warningIndicator)
                     .Replace("{Killer}", killerName)
                     .Replace("{Victim}", victimName)
@@ -93,6 +108,7 @@ namespace BestKillfeed.Patches
 
                 Unity.Collections.FixedString512Bytes messageToSend = msgString;
                 ServerChatUtils.SendSystemMessageToAllClients(entityManager, ref messageToSend);
+
                 if (announcedBounty)
                 {
                     var announce = $"<color=#ff0000>[!] A BOUNTY HAS BEEN PLACED ON {killerName} ({killerData.CurrentStreak} Kills) [!]</color>";
@@ -107,7 +123,8 @@ namespace BestKillfeed.Patches
                     var announce = $"<color=#00ff00>★ {killerName} has claimed the bounty on {victimName}! ★</color>";
                     Unity.Collections.FixedString512Bytes fAnnounce = announce;
                     ServerChatUtils.SendSystemMessageToAllClients(entityManager, ref fAnnounce);
-                    RewardService.Instance.GiveBountyReward(killer, victimName);
+                    // Passe le streak de la victime avant le reset pour le scaling
+                    RewardService.Instance.GiveBountyReward(killer, victimName, victimStreakBeforeDeath);
                 }
 
                 if (killAllowed && KillfeedSettings.EnableKillRewards.Value)

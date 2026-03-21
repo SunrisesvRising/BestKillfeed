@@ -13,10 +13,7 @@ namespace BestKillfeed.Commands
         public static void ReloadConfig(ChatCommandContext ctx)
         {
             KillfeedSettings.Reload();
-
-            // Réappliquer le flag BloodBound après rechargement au cas où RewardItemId ou RewardBloodBound a changé
             BloodBoundService.SetRewardItemBloodBound(KillfeedSettings.RewardBloodBound.Value);
-
             ctx.Reply("<color=#00ff88>[BestKillfeed]</color> Configuration reloaded from killfeed.cfg.");
         }
 
@@ -115,7 +112,7 @@ namespace BestKillfeed.Commands
             ctx.Reply($"<color=#00ff88>[BestKillfeed]</color> Kill reward set to <color=#ffffff>x{amount}</color>.");
         }
 
-        [Command("kf-setbountyreward", "kfsbr", description: "Set the bounty claim reward item amount. Usage: .kf-setbountyreward <amount>", adminOnly: true)]
+        [Command("kf-setbountyreward", "kfsbr", description: "Set the base bounty reward item amount. Usage: .kf-setbountyreward <amount>", adminOnly: true)]
         public static void SetBountyReward(ChatCommandContext ctx, int amount)
         {
             if (amount <= 0)
@@ -124,7 +121,59 @@ namespace BestKillfeed.Commands
                 return;
             }
             KillfeedSettings.BountyRewardItemAmount.Value = amount;
-            ctx.Reply($"<color=#00ff88>[BestKillfeed]</color> Bounty reward set to <color=#ffffff>x{amount}</color>.");
+            ctx.Reply($"<color=#00ff88>[BestKillfeed]</color> Bounty base reward set to <color=#ffffff>x{amount}</color>.");
+        }
+
+        // ─────────────────────────────────────────────
+        //  BOUNTY CLAIM DURATION
+        // ─────────────────────────────────────────────
+
+        [Command("kf-setclaimduration", "kfscd", description: "Set the bounty claim channel duration in seconds. Usage: .kf-setclaimduration <seconds>", adminOnly: true)]
+        public static void SetClaimDuration(ChatCommandContext ctx, int seconds)
+        {
+            if (seconds <= 0)
+            {
+                ctx.Reply("<color=#ff5555>[BestKillfeed]</color> Duration must be greater than 0.");
+                return;
+            }
+            KillfeedSettings.BountyClaimDuration.Value = seconds;
+            ctx.Reply($"<color=#00ff88>[BestKillfeed]</color> Bounty claim duration set to <color=#ffffff>{seconds}s</color>.");
+        }
+
+        // ─────────────────────────────────────────────
+        //  BOUNTY CLAIM GRACE PERIOD
+        // ─────────────────────────────────────────────
+
+        [Command("kf-setclaimgrace", "kfscg", description: "Set the bounty claim grace period in seconds. Usage: .kf-setclaimgrace <seconds>", adminOnly: true)]
+        public static void SetClaimGrace(ChatCommandContext ctx, int seconds)
+        {
+            if (seconds < 0)
+            {
+                ctx.Reply("<color=#ff5555>[BestKillfeed]</color> Grace period cannot be negative.");
+                return;
+            }
+            KillfeedSettings.BountyClaimGracePeriod.Value = seconds;
+            ctx.Reply($"<color=#00ff88>[BestKillfeed]</color> Bounty claim grace period set to <color=#ffffff>{seconds}s</color>.");
+        }
+
+        // ─────────────────────────────────────────────
+        //  BOUNTY STREAK MULTIPLIER
+        // ─────────────────────────────────────────────
+
+        [Command("kf-setbountymultiplier", "kfsbm", description: "Set the bounty reward streak multiplier. Usage: .kf-setbountymultiplier <value> (e.g. 0.1)", adminOnly: true)]
+        public static void SetBountyMultiplier(ChatCommandContext ctx, float value)
+        {
+            if (value < 0f)
+            {
+                ctx.Reply("<color=#ff5555>[BestKillfeed]</color> Multiplier cannot be negative.");
+                return;
+            }
+            KillfeedSettings.BountyRewardStreakMultiplier.Value = value;
+
+            if (value == 0f)
+                ctx.Reply("<color=#00ff88>[BestKillfeed]</color> Bounty streak multiplier set to <color=#aaaaaa>0 (scaling disabled)</color>.");
+            else
+                ctx.Reply($"<color=#00ff88>[BestKillfeed]</color> Bounty streak multiplier set to <color=#ffffff>{value}</color>. Formula: base * (1 + streak * {value}).");
         }
 
         // ─────────────────────────────────────────────
@@ -137,16 +186,20 @@ namespace BestKillfeed.Commands
             string bountyState = KillfeedSettings.EnableBounty.Value ? "<color=#00ff00>ON</color>" : "<color=#ff5555>OFF</color>";
             string rewardsState = KillfeedSettings.EnableKillRewards.Value ? "<color=#00ff00>ON</color>" : "<color=#ff5555>OFF</color>";
             string bbState = KillfeedSettings.RewardBloodBound.Value ? "<color=#ff4444>YES</color>" : "<color=#aaaaaa>no</color>";
+            string multiplierDisplay = KillfeedSettings.BountyRewardStreakMultiplier.Value == 0f
+                ? "<color=#aaaaaa>disabled</color>"
+                : $"<color=#ffffff>{KillfeedSettings.BountyRewardStreakMultiplier.Value}</color>";
 
             ctx.Reply(
                 "<color=#ffaa00>--- BestKillfeed Status ---</color>\n" +
-                $"  Bounty          : {bountyState}  (streak threshold: <color=#ffffff>{KillfeedSettings.BountyStreakThreshold.Value} kills</color>)\n" +
-                $"  Kill rewards    : {rewardsState}  (x<color=#ffffff>{KillfeedSettings.RewardItemAmount.Value}</color>)\n" +
-                $"  Bounty reward   : x<color=#ffffff>{KillfeedSettings.BountyRewardItemAmount.Value}</color>\n" +
-                $"  Reward item     : <color=#ffffff>{KillfeedSettings.RewardItemId.Value}</color>\n" +
-                $"  Blood-Bound     : {bbState}\n" +
-                $"  Max level       : <color=#ffffff>{KillfeedSettings.MaxLevel.Value}</color>\n" +
-                $"  Level gap       : normal <color=#ffffff>{KillfeedSettings.MaxLevelGapNormal.Value}</color> / max level <color=#ffffff>{KillfeedSettings.MaxLevelGapHigh.Value}</color>"
+                $"  Bounty            : {bountyState}  (streak threshold: <color=#ffffff>{KillfeedSettings.BountyStreakThreshold.Value} kills</color>)\n" +
+                $"  Claim duration    : <color=#ffffff>{KillfeedSettings.BountyClaimDuration.Value}s</color>  grace: <color=#ffffff>{KillfeedSettings.BountyClaimGracePeriod.Value}s</color>\n" +
+                $"  Kill rewards      : {rewardsState}  (x<color=#ffffff>{KillfeedSettings.RewardItemAmount.Value}</color>)\n" +
+                $"  Bounty reward     : x<color=#ffffff>{KillfeedSettings.BountyRewardItemAmount.Value}</color>  streak multiplier: {multiplierDisplay}\n" +
+                $"  Reward item       : <color=#ffffff>{KillfeedSettings.RewardItemId.Value}</color>\n" +
+                $"  Blood-Bound       : {bbState}\n" +
+                $"  Max level         : <color=#ffffff>{KillfeedSettings.MaxLevel.Value}</color>\n" +
+                $"  Level gap         : normal <color=#ffffff>{KillfeedSettings.MaxLevelGapNormal.Value}</color> / max level <color=#ffffff>{KillfeedSettings.MaxLevelGapHigh.Value}</color>"
             );
         }
     }

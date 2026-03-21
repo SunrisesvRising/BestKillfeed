@@ -63,12 +63,16 @@ namespace BestKillfeed.Services
             }
         }
 
-        public void GiveBountyReward(Entity characterEntity, string victimName, bool isSelfClaim = false)
+        public void GiveBountyReward(Entity characterEntity, string victimName, int streak, bool isSelfClaim = false)
         {
             try
             {
                 var itemPrefab = new PrefabGUID(KillfeedSettings.RewardItemId.Value);
-                int amount = KillfeedSettings.BountyRewardItemAmount.Value;
+                int baseAmount = KillfeedSettings.BountyRewardItemAmount.Value;
+                float streakMultiplier = KillfeedSettings.BountyRewardStreakMultiplier.Value;
+
+                // Scale en fonction du streak du porteur de bounty
+                int amount = (int)Math.Floor(baseAmount * (1f + streak * streakMultiplier));
                 if (amount <= 0) return;
 
                 Core.ServerGameManager.TryAddInventoryItem(characterEntity, itemPrefab, amount);
@@ -80,9 +84,13 @@ namespace BestKillfeed.Services
                     {
                         var userData = Core.EntityManager.GetComponentData<User>(userEntity);
 
+                        string scalingInfo = streakMultiplier > 0f
+                            ? $" <color=#00ff00>(Streak {streak} — x{(1f + streak * streakMultiplier):F1})</color>"
+                            : "";
+
                         string message = isSelfClaim
-                            ? $"<color=#ffff00>Bounty Claimed:</color> You received <color=#ffffff>{amount}x</color> items for surviving your bounty!"
-                            : $"<color=#ffff00>Bounty Claimed:</color> You received <color=#ffffff>{amount}x</color> items for killing {victimName}!";
+                            ? $"<color=#ffff00>Bounty Claimed:</color> You received <color=#ffffff>{amount}x</color> items for surviving your bounty!{scalingInfo}"
+                            : $"<color=#ffff00>Bounty Claimed:</color> You received <color=#ffffff>{amount}x</color> items for killing {victimName}!{scalingInfo}";
 
                         Unity.Collections.FixedString512Bytes fMessage = message;
                         ServerChatUtils.SendSystemMessageToClient(Core.EntityManager, userData, ref fMessage);
